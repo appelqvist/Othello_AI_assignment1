@@ -1,2 +1,2 @@
 # Othello
-## First assignment in AI-course.
+*First assignment in AI-course.*
