@@ -5,10 +5,10 @@ package main;
  * Created by Andréas Appelqvist on 2016-09-22.
  *
  */
-public class Brick {
-    int currentColor; // 0=no color -1 = white 1 = white
+public class Tile {
+    int currentColor; // 0=no color -1 = white(AI) 1 = black(player)
 
-    public Brick(){
+    public Tile(){
         currentColor = 0;
     }
 
@@ -18,6 +18,10 @@ public class Brick {
 
     public void setBlack(){
         currentColor = 1;
+    }
+
+    public int getCurrentTileInt(){
+        return currentColor;
     }
 
     public boolean isBlack(){
@@ -30,6 +34,13 @@ public class Brick {
     public boolean isWhite(){
         if(currentColor == -1){
             return true;
+        }
+        return false;
+    }
+
+    public boolean isEmpty(){
+        if(currentColor == 0){
+            return  true;
         }
         return false;
     }

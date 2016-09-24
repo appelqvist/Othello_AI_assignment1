@@ -8,20 +8,20 @@ import java.util.ArrayList;
  */
 
 public class Game {
-    private ArrayList<Brick> board;
     private GameBoard gameBoard;
-    private boolean playerTurn, gamePlaying;
 
     public Game(int cols, int rows) {
         gameBoard = new GameBoard(cols, rows);
-        gamePlaying = true;
         startGame();
     }
 
     public void startGame() {
+        System.out.println(gameBoard.getPlayerLegalMove().toString());
+
+        /*int inputCol = -1, inputRow = -1;
         String str = JOptionPane.showInputDialog(gameBoard.getStrBoard() + "\nIt's your turn. Input format is COL ROW");
-        int inputCol = Integer.parseInt(""+str.charAt(0));
-        int inputRow = Integer.parseInt(""+str.charAt(2));
-        System.out.println("du har valt col:"+inputCol+" row:"+inputRow);
+        inputCol = Integer.parseInt("" + str.charAt(0));
+        inputRow = Integer.parseInt("" + str.charAt(2));
+        System.out.println("du har valt col:" + inputCol + " row:" + inputRow);*/
     }
 }
