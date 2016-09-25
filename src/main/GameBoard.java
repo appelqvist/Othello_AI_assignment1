@@ -47,7 +47,7 @@ public class GameBoard {
         for (int i = 0; i < board.size(); i++) {
             if (board.get(i).isEmpty()) {
                 //Check tile under board(i)
-                if (i + totalRows < board.size() && !board.get(i + totalRows).isEmpty() && player * -1 == board.get(i + totalRows).getCurrentTileInt()) {
+                if (i + totalRows < board.size() && player * -1 == board.get(i + totalRows).getCurrentTileInt()) {
                     int multiplier = totalRows;
                     while (i + multiplier < board.size() && player * -1 == board.get(i + multiplier).getCurrentTileInt()) {
                         multiplier += totalRows;
@@ -55,13 +55,35 @@ public class GameBoard {
                     if (i + multiplier < board.size() && player == board.get(i + multiplier).getCurrentTileInt()) {
                         legalMoves.add(i);
                     }
-                } else if (i - totalRows >= 0 && !board.get(i - totalRows).isEmpty() && player * -1 == board.get(i - totalRows).getCurrentTileInt()){ //Check tile over board(i)
+                } else if (i - totalRows >= 0 && player * -1 == board.get(i - totalRows).getCurrentTileInt()){ //Check tile over board(i)
                     int multiplier = totalRows;
                     while (i - multiplier >= 0 && player * -1 == board.get(i - multiplier).getCurrentTileInt()) {
                         multiplier += totalRows;
                     }
                     if (i - multiplier >= 0 && player == board.get(i - multiplier).getCurrentTileInt()) {
                         legalMoves.add(i);
+                    }
+                    //Looking right of board(i)
+                }else if((i + 1) % totalCols > 0){  //If it's not a wall on right side
+                    if(i + 1 < board.size() && player * -1 == board.get(i+1).getCurrentTileInt()){
+                        int increase = 1;
+                        while ( (i + increase)% totalCols > 0 && i + increase < board.size() && player * -1 == board.get(increase + i).getCurrentTileInt()){
+                            increase ++;
+                        }
+                        if((i + increase)% totalCols > 0 && i + increase < board.size() && player == board.get(increase + i).getCurrentTileInt()){
+                            legalMoves.add(i);
+                        }
+                    }
+                    //Looking left of board(i)
+                }else if(i % totalCols > 0){ //If it's not a wall on left side of board(i)
+                    if(i-1 >= 0 && !board.get(i-1).isEmpty() && player * -1 == board.get(i-1).getCurrentTileInt()){
+                        int increse = 1;
+                        while( i - increse >= 0 && (i - increse) % totalCols > 0 && player * -1 == board.get(i -increse).getCurrentTileInt()){
+                            increse++;
+                        }
+                        if(i - increse >= 0 && (i - increse) % totalCols > 0 && player == board.get(i -increse).getCurrentTileInt()){
+                            legalMoves.add(i);
+                        }
                     }
                 }
 
