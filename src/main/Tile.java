@@ -12,12 +12,16 @@ public class Tile {
         currentColor = 0;
     }
 
-    public void setWhite(){
-        currentColor = -1;
+    public void setCurrentTileInt(int playerColor){
+        this.currentColor = playerColor;
     }
 
     public void setBlack(){
-        currentColor = 1;
+        this.currentColor = 1;
+    }
+
+    public void setWhite(){
+        this.currentColor = -1;
     }
 
     public int getCurrentTileInt(){

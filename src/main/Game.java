@@ -21,25 +21,28 @@ public class Game {
         startGame();
     }
 
+    private void makeMove(Move move){
+        gameBoard.switchBrickColor(move);
+    }
+
     public void startGame() {
         LinkedList<Move> legalMoves;
         while (running) {
             int inputCol = -1, inputRow = -1;
             legalMoves = gameBoard.getPlayerLegalMove();
-
-            /*
-            for (int i = 0; i < legalMoves.size(); i++) {
-                for (int j = 0; j < legalMoves.get(i).getPosOfSwitchingBricks().size(); j++) {
-                    System.out.println(legalMoves.get(i).getPosOfSwitchingBricks().get(j));
-                }
-            }
-            */
-
-            String str = JOptionPane.showInputDialog(gameBoard.getStrBoard() + "\nIt's your turn. Input format is COL ROW");
+            String str = JOptionPane.showInputDialog(gameBoard.getStrBoard(legalMoves) + "\nIt's your turn. Input format is COL ROW");
             inputCol = Integer.parseInt("" + str.charAt(0));
             inputRow = Integer.parseInt("" + str.charAt(2));
             int pos = ((inputRow - 1) * cols) + inputCol - 1;
             System.out.println("du har valt col:" + inputCol + " row:" + inputRow + " Vilket blir pos: " + pos);
+
+            Move m;
+            while(!legalMoves.isEmpty()){
+                if((m = legalMoves.remove()).getStartPos() == pos){
+                    makeMove(m);
+                }
+            }
+
         }
     }
 }

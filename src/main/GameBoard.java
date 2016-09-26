@@ -26,23 +26,23 @@ public class GameBoard {
         int startCol, startRow;
         startCol = (int) (totalCols / 2) - 1;
         startRow = (int) (totalRows / 2) - 1;
-
-/*
         board.get((startRow * totalCols) + startCol).setWhite();
         board.get((startRow * totalCols) + startCol + 1).setBlack();
         board.get((startRow * totalCols) + startCol + totalCols).setBlack();
         board.get((startRow * totalCols) + startCol + totalCols + 1).setWhite();
-
-        */
-
-        board.get(1).setWhite();
-        board.get(2).setBlack();
-        board.get(4).setWhite();
-        board.get(8).setBlack();
     }
 
     public LinkedList<Move> getComputersLegalMove() {
         return getLegalMoves(-1);
+    }
+
+    public void switchBrickColor(Move move){
+        int position, player = move.getMovePlayerInt();
+        while(!move.getPosOfSwitchingBricks().isEmpty()){
+            position = move.getPosOfSwitchingBricks().remove();
+            board.get(position).setCurrentTileInt(player);
+        }
+        board.get(move.getStartPos()).setCurrentTileInt(player);
     }
 
     public LinkedList<Move> getPlayerLegalMove() {
@@ -194,10 +194,8 @@ public class GameBoard {
         return isAlreadyAMove;
     }
 
-    public String getStrBoard() {
-
+    public String getStrBoard(LinkedList<Move> legalMoves) {
         String str = "     ";
-
         for (int i = 0; i < totalCols; i++) {
             str += "  " + (i + 1) + "  ";
         }
@@ -210,8 +208,19 @@ public class GameBoard {
                     str += "[X] ";
                 } else if (board.get((i * totalCols) + j).isWhite()) {
                     str += "[O] ";
-                } else {
-                    str += "[   ] ";
+                }
+                else{
+                    boolean contained = false;
+                    for(int k = 0; k < legalMoves.size(); k++){
+                       if((i * totalCols) + j == legalMoves.get(k).getStartPos()){
+                           contained = true;
+                       }
+                    }
+                    if(contained){
+                        str += "{  } ";
+                    }else{
+                        str += "[   ] ";
+                    }
                 }
             }
             str += "\n";
