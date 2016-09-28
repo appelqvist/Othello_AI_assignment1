@@ -32,10 +32,12 @@ public class AI {
         } else {
             for (int i = 0; i < moves.size(); i++) {
                 GameBoard copy = board.getCopy();
+                System.out.println(moves.get(i).getPosOfSwitchingBricks());
                 copy.switchBrickColor(moves.get(i));
 
                 if (maxPlayer) {
                     MiniMaxMove mmm = minmax(level - 1, copy, false);
+                    System.out.println(moves.get(i).getPosOfSwitchingBricks());
                     if (mmm.getScore() > bestScore) {
                         bestScore = mmm.getScore();
                         bestMove = moves.get(i);
