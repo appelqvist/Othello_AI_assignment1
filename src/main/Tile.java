@@ -9,7 +9,11 @@ public class Tile {
     int currentColor; // 0=no color -1 = white(AI) 1 = black(player)
 
     public Tile(){
-        currentColor = 0;
+        this(0);
+    }
+
+    public Tile(int currentColor){
+        this.currentColor = currentColor;
     }
 
     public void setCurrentTileInt(int playerColor){

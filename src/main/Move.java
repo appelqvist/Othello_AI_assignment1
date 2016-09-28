@@ -20,12 +20,20 @@ public class Move {
         posOfSwitchBricks.add(pos);
     }
 
+    public void setPlayer(int player){
+        this.player = player;
+    }
+
     public int getMovePlayerInt(){
         return player;
     }
 
     public int getStartPos(){
         return pos;
+    }
+
+    public void setPosOfSwitchBricks(LinkedList<Integer> posOfSwitchBricks){
+        this.posOfSwitchBricks = posOfSwitchBricks;
     }
 
     public LinkedList<Integer> getPosOfSwitchingBricks(){
