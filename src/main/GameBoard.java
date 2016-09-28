@@ -72,7 +72,7 @@ public class GameBoard {
     public void switchBrickColor(Move move){
         int player = move.getMovePlayerInt();
         for(int i = 0; i < move.getPosOfSwitchingBricks().size(); i++){
-            this.board.get(i).setCurrentTileInt(player);
+            this.board.get(move.getPosOfSwitchingBricks().get(i)).setCurrentTileInt(player);
         }
         this.board.get(move.getStartPos()).setCurrentTileInt(player);
     }
