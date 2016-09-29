@@ -15,22 +15,23 @@ public class GameBoard {
         this.totalCols = cols;
         this.totalRows = rows;
     }
-    public int getTotalCols(){
+
+    public int getTotalCols() {
         return this.totalCols;
     }
 
-    public ArrayList<Tile> getBoard(){
+    public ArrayList<Tile> getBoard() {
         return board;
     }
 
-    public void setBoard(ArrayList<Tile> board){
+    public void setBoard(ArrayList<Tile> board) {
         this.board = board;
     }
 
-    public GameBoard getCopy(){
+    public GameBoard getCopy() {
         GameBoard copy = new GameBoard(this.totalCols, this.totalRows);
         ArrayList<Tile> copyOfBoard = new ArrayList<>(this.board.size());
-        for(int i = 0; i < this.board.size(); i++) {
+        for (int i = 0; i < this.board.size(); i++) {
             copyOfBoard.add(new Tile(board.get(i).getCurrentTileInt()));
         }
         copy.setBoard(copyOfBoard);
@@ -50,28 +51,30 @@ public class GameBoard {
         board.get((startRow * totalCols) + startCol + 1).setBlack();
         board.get((startRow * totalCols) + startCol + totalCols).setBlack();
         board.get((startRow * totalCols) + startCol + totalCols + 1).setWhite();
+
     }
 
-    public int getBoardScore(){
+    public int getBoardScore() {
         int score = 0;
-        for(int i = 0; i < board.size(); i++){
+        for (int i = 0; i < board.size(); i++) {
             score += board.get(i).currentColor;
         }
         return score;
     }
 
-    public boolean isGameOver(){
-        for(int i = 0; i < board.size(); i++){
-            if(board.get(i).getCurrentTileInt() == 0){
+    public boolean isGameOver() {
+        for (int i = 0; i < board.size(); i++) {
+            if (board.get(i).getCurrentTileInt() == 0) {
                 return false;
             }
         }
         return true;
     }
 
-    public void switchBrickColor(Move move){
+    public void switchBrickColor(Move move) {
         int player = move.getMovePlayerInt();
-        for(int i = 0; i < move.getPosOfSwitchingBricks().size(); i++){
+        System.out.println("switching tiles: "+move.getPosOfSwitchingBricks());
+        for (int i = 0; i < move.getPosOfSwitchingBricks().size(); i++) {
             this.board.get(move.getPosOfSwitchingBricks().get(i)).setCurrentTileInt(player);
         }
         this.board.get(move.getStartPos()).setCurrentTileInt(player);
@@ -91,8 +94,8 @@ public class GameBoard {
         for (int i = 0; i < board.size(); i++) {
             if (board.get(i).isEmpty()) {
                 //Check tile under board(i)
-                if (i + totalRows < board.size() && (player * -1) == board.get(i + totalRows).getCurrentTileInt()) {
-                    int increase = totalRows;
+                if (i + totalCols < board.size() && (player * -1) == board.get(i + totalCols).getCurrentTileInt()) {
+                    int increase = totalCols;
                     Move aMove = new Move(i, player);
                     while (i + increase < board.size() && (player * -1) == board.get(i + increase).getCurrentTileInt()) {
                         aMove.addPosition(i + increase);
@@ -161,48 +164,48 @@ public class GameBoard {
                             legalMoves.add(aMove);
                     }
                 }
-            }
 
-            //Looking left of board(i)
-            if (i % totalCols > 0) { //If it's not a wall on left side of board(i)
-                if (i - 1 >= 0 && (player * -1) == board.get(i - 1).getCurrentTileInt()) {
-                    int increase = 1;
-                    Move aMove = new Move(i, player);
-                    while (i - increase >= 0 && (i - increase) % totalCols > 0 && (player * -1) == board.get(i - increase).getCurrentTileInt()) {
-                        aMove.addPosition(i - increase);
-                        increase++;
+                //Looking left of board(i)
+                if (i % totalCols > 0) { //If it's not a wall on left side of board(i)
+                    if (i - 1 >= 0 && (player * -1) == board.get(i - 1).getCurrentTileInt()) {
+                        int increase = 1;
+                        Move aMove = new Move(i, player);
+                        while (i - increase >= 0 && (i - increase) % totalCols > 0 && (player * -1) == board.get(i - increase).getCurrentTileInt()) {
+                            aMove.addPosition(i - increase);
+                            increase++;
+                        }
+                        if (i - increase >= 0 && (i - increase) % totalCols > 0 && player == board.get(i - increase).getCurrentTileInt()) {
+                            if (!mergeMove(legalMoves, aMove))
+                                legalMoves.add(aMove);
+                        }
                     }
-                    if (i - increase >= 0 && (i - increase) % totalCols > 0 && player == board.get(i - increase).getCurrentTileInt()) {
-                        if (!mergeMove(legalMoves, aMove))
-                            legalMoves.add(aMove);
-                    }
-                }
 
-                //Looking SouthWest
-                if (i + totalCols - 1 < board.size() && (player * -1) == board.get(i + totalCols - 1).getCurrentTileInt()) {
-                    int increase = totalCols - 1;
-                    Move aMove = new Move(i, player);
-                    while (i + increase < board.size() && i + increase % totalCols > 0 && (player * -1) == board.get(i + increase).getCurrentTileInt()) {
-                        aMove.addPosition(i + increase);
-                        increase += (totalCols - 1);
+                    //Looking SouthWest
+                    if (i + totalCols - 1 < board.size() && (player * -1) == board.get(i + totalCols - 1).getCurrentTileInt()) {
+                        int increase = totalCols - 1;
+                        Move aMove = new Move(i, player);
+                        while (i + increase < board.size() && i + increase % totalCols > 0 && (player * -1) == board.get(i + increase).getCurrentTileInt()) {
+                            aMove.addPosition(i + increase);
+                            increase += (totalCols - 1);
+                        }
+                        if (i + increase < board.size() && i + increase % totalCols > 0 && player == board.get(i + increase).getCurrentTileInt()) {
+                            if (!mergeMove(legalMoves, aMove))
+                                legalMoves.add(aMove);
+                        }
                     }
-                    if (i + increase < board.size() && i + increase % totalCols > 0 && player == board.get(i + increase).getCurrentTileInt()) {
-                        if (!mergeMove(legalMoves, aMove))
-                            legalMoves.add(aMove);
-                    }
-                }
 
-                //Looking NothWest
-                if (i - totalCols - 1 >= 0 && (player * -1) == board.get(i - 1 - totalCols).getCurrentTileInt()) {
-                    int increase = (totalCols + 1);
-                    Move aMove = new Move(i, player);
-                    while (i - increase >= 0 && i - increase % totalCols > 0 && (player * -1) == board.get(i - increase).getCurrentTileInt()) {
-                        aMove.addPosition(i - increase);
-                        increase += totalCols + 1;
-                    }
-                    if (i - increase >= 0 && i - increase % totalCols > 0 && player == board.get(i - increase).getCurrentTileInt()) {
-                        if (!mergeMove(legalMoves, aMove)) {
-                            legalMoves.add(aMove);
+                    //Looking NothWest
+                    if (i - totalCols - 1 >= 0 && (player * -1) == board.get(i - 1 - totalCols).getCurrentTileInt()) {
+                        int increase = (totalCols + 1);
+                        Move aMove = new Move(i, player);
+                        while (i - increase >= 0 && i - increase % totalCols > 0 && (player * -1) == board.get(i - increase).getCurrentTileInt()) {
+                            aMove.addPosition(i - increase);
+                            increase += totalCols + 1;
+                        }
+                        if (i - increase >= 0 && i - increase % totalCols > 0 && player == board.get(i - increase).getCurrentTileInt()) {
+                            if (!mergeMove(legalMoves, aMove)) {
+                                legalMoves.add(aMove);
+                            }
                         }
                     }
                 }
@@ -244,17 +247,18 @@ public class GameBoard {
                     str += "[X] ";
                 } else if (board.get((i * totalCols) + j).isWhite()) {
                     str += "[O] ";
-                }
-                else{
+                } else {
                     boolean contained = false;
-                    for(int k = 0; k < legalMoves.size(); k++){
-                       if((i * totalCols) + j == legalMoves.get(k).getStartPos()){
-                           contained = true;
-                       }
+                    if (legalMoves != null) {
+                        for (int k = 0; k < legalMoves.size(); k++) {
+                            if ((i * totalCols) + j == legalMoves.get(k).getStartPos()) {
+                                contained = true;
+                            }
+                        }
                     }
-                    if(contained){
+                    if (contained) {
                         str += "{  } ";
-                    }else{
+                    } else {
                         str += "[   ] ";
                     }
                 }

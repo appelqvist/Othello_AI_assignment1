@@ -28,39 +28,55 @@ public class Game {
     }
 
     public void startGame() {
-        LinkedList<Move> legalMoves;
-        boolean playerHasMadeMove = false;
-        while (running) {
-            int inputCol, inputRow;
-            legalMoves = gameBoard.getPlayerLegalMove();
-            String str = JOptionPane.showInputDialog(gameBoard.getStrBoard(legalMoves) + "\nIt's your turn. Input format is COL ROW");
-            inputCol = Integer.parseInt("" + str.charAt(0));
-            inputRow = Integer.parseInt("" + str.charAt(2));
-            int pos = ((inputRow - 1) * gameBoard.getTotalCols()) + inputCol - 1;
-            System.out.println("du har valt col:" + inputCol + " row:" + inputRow + " Vilket blir pos: " + pos);
 
-            Move m;
-            while (!legalMoves.isEmpty()) {
+        boolean playerHasMadeALegalMove;
+        while (running) {
+            LinkedList<Move> legalMoves;
+            playerHasMadeALegalMove = false;
+
+            if ((legalMoves = gameBoard.getPlayerLegalMove()).isEmpty()) {
+                JOptionPane.showMessageDialog(null, gameBoard.getStrBoard(null) + "\nYou has no available move\nAI will move");
+                playerHasMadeALegalMove = true;
+            } else {
+                Move m;
+                int inputCol, inputRow;
+                String str = JOptionPane.showInputDialog(gameBoard.getStrBoard(legalMoves) + "\nIt's your turn. Input format is COL ROW");
+                inputCol = Integer.parseInt("" + str.charAt(0));
+                inputRow = Integer.parseInt("" + str.charAt(2));
+                int pos = ((inputRow - 1) * gameBoard.getTotalCols()) + inputCol - 1;
+                System.out.println("du har valt col:" + inputCol + " row:" + inputRow + " Vilket blir pos: " + pos);
+
                 if ((m = legalMoves.remove()).getStartPos() == pos) {
                     makeMove(m);
-                    playerHasMadeMove = true;
+                    playerHasMadeALegalMove = true;
+                    JOptionPane.showMessageDialog(null, gameBoard.getStrBoard(null) + "\nBoard after your move\nAI will now move");
                 }
             }
 
-            if (playerHasMadeMove) {
-                System.out.println("Computer will make move");
-                this.makeMove(computer.chooseMove());
-                playerHasMadeMove = false;
+            if (gameBoard.isGameOver()) {
+                JOptionPane.showMessageDialog(null, gameBoard.getStrBoard(null) + "\nGAME OVER!\n" +
+                        "Score: " + gameBoard.getBoardScore());
+                running = false;
+                break;
+            }
+
+            if (playerHasMadeALegalMove) {
+                if (gameBoard.getComputersLegalMove().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, gameBoard.getStrBoard(null) + "\nComputer had no available move");
+                } else {
+                    System.out.println("Computer will make move");
+                    this.makeMove(computer.chooseMove());
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "NOT A LEGAL MOVE");
+                JOptionPane.showMessageDialog(null, "Invalid Input");
             }
 
             if (gameBoard.isGameOver()) {
-                System.out.println("No more tiles. GAME OVER. Score: " + gameBoard.getBoardScore() + "" +
-                        "\nRestart the application for a new match");
+                JOptionPane.showMessageDialog(null, gameBoard.getStrBoard(null) + "\nGAME OVER!\n" +
+                        "Score: " + gameBoard.getBoardScore());
                 running = false;
+                break;
             }
-
         }
     }
 }

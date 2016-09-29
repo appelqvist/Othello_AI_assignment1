@@ -15,40 +15,46 @@ public class AI {
     }
 
     public Move chooseMove() {
-        Move move = minmax(5, mainBoard, true).getMove();
-        move.setPlayer(-1);
+        Move move = minmax(2, mainBoard,Integer.MIN_VALUE, Integer.MAX_VALUE, true).getMove();
+        //move.setPlayer(-1);
         System.out.println("Vald pos av AI är: "+move.getStartPos());
         return move;
     }
 
-    private MiniMaxMove minmax(int level, GameBoard board, boolean maxPlayer) { //maxPlayer is AI
+    private MiniMaxMove minmax(int level, GameBoard board,int alpha, int beta, boolean maxPlayer) { //maxPlayer is AI
         LinkedList<Move> moves = maxPlayer ? board.getComputersLegalMove() : board.getPlayerLegalMove();
-        //System.out.println(moves.get(0).getPosOfSwitchingBricks()); //SKA BORT
-        int bestScore = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+
+        //int bestScore = maxPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE; Just used without alphabeta-pruning
         Move bestMove = null;
 
         if (level == 0 || moves.isEmpty()) {
-           bestScore = board.getBoardScore();
+            return new MiniMaxMove(null, board.getBoardScore());
         } else {
             for (int i = 0; i < moves.size(); i++) {
                 GameBoard copy = board.getCopy();
                 copy.switchBrickColor(moves.get(i));
 
                 if (maxPlayer) {
-                    MiniMaxMove mmm = minmax(level - 1, copy, false);
-                    if (mmm.getScore() > bestScore) {
-                        bestScore = mmm.getScore();
+                    MiniMaxMove mmm = minmax(level - 1, copy, alpha, beta, false);
+                    if (mmm.getScore() > alpha) {
+                        //bestScore = mmm.getScore(); Just used without alphabeta-pruning
+                        alpha = mmm.getScore();
                         bestMove = moves.get(i);
                     }
                 } else {
-                    MiniMaxMove mmm = minmax(level - 1, copy, true);
-                    if (mmm.getScore() < bestScore) {
-                        bestScore = mmm.getScore();
+                    MiniMaxMove mmm = minmax(level - 1, copy, alpha, beta, true);
+                    if (mmm.getScore() < beta) {
+                        beta = mmm.getScore();
+                        //bestScore = mmm.getScore(); Just used without alphabeta-pruning
                         bestMove = moves.get(i);
                     }
                 }
+                if(alpha >= beta){ //Cut off
+                    System.out.println("CUT OFF");
+                    break;
+                }
             }
         }
-        return new MiniMaxMove(bestMove, bestScore);
+        return new MiniMaxMove(bestMove, maxPlayer ? alpha : beta);
     }
 }
