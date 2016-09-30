@@ -15,7 +15,7 @@ public class AI {
     }
 
     public Move chooseMove() {
-        Move move = minmax(2, mainBoard,Integer.MIN_VALUE, Integer.MAX_VALUE, true).getMove();
+        Move move = minmax(12, mainBoard,Integer.MIN_VALUE, Integer.MAX_VALUE, true).getMove();
         //move.setPlayer(-1);
         System.out.println("Vald pos av AI är: "+move.getStartPos());
         return move;

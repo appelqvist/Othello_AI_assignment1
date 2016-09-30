@@ -29,6 +29,35 @@ public class Game {
 
     public void startGame() {
 
+        /*
+        while(true){
+
+            LinkedList<Move> moves = gameBoard.getPlayerLegalMove();
+            System.out.print("\nMoves du kan välja:");
+            for(int i = 0; i < moves.size(); i++)
+                System.out.print(moves.get(i).getStartPos()+" , ");
+
+
+            int input = Integer.parseInt(JOptionPane.showInputDialog(gameBoard.getStrBoard(null) + "\nX, turn"));
+            for(int i = 0; i < moves.size(); i++)
+                if(moves.get(i).getStartPos() == input)
+                    makeMove(moves.get(i));
+
+
+
+            moves = gameBoard.getComputersLegalMove();
+
+            System.out.print("\nMoves du kan välja:");
+            for(int i = 0; i < moves.size(); i++)
+                System.out.print(moves.get(i).getStartPos()+" , ");
+
+            int input2 = Integer.parseInt(JOptionPane.showInputDialog(gameBoard.getStrBoard(null) + "\nO, turn"));
+            for(int i = 0; i < moves.size(); i++)
+                if(moves.get(i).getStartPos() == input2)
+                    makeMove(moves.get(i));
+        }
+        */
+
         boolean playerHasMadeALegalMove;
         while (running) {
             LinkedList<Move> legalMoves;
@@ -46,10 +75,13 @@ public class Game {
                 int pos = ((inputRow - 1) * gameBoard.getTotalCols()) + inputCol - 1;
                 System.out.println("du har valt col:" + inputCol + " row:" + inputRow + " Vilket blir pos: " + pos);
 
-                if ((m = legalMoves.remove()).getStartPos() == pos) {
-                    makeMove(m);
-                    playerHasMadeALegalMove = true;
-                    JOptionPane.showMessageDialog(null, gameBoard.getStrBoard(null) + "\nBoard after your move\nAI will now move");
+                for (int i = 0; i < legalMoves.size(); i++){
+                    if (legalMoves.get(i).getStartPos() == pos) {
+                        makeMove(legalMoves.get(i));
+                        playerHasMadeALegalMove = true;
+                        JOptionPane.showMessageDialog(null, gameBoard.getStrBoard(null) + "\nBoard after your move\nAI will now move");
+                        break;
+                    }
                 }
             }
 
@@ -78,5 +110,6 @@ public class Game {
                 break;
             }
         }
+        System.exit(0);
     }
 }
