@@ -1,7 +1,7 @@
 package main;
 
 /**
- * Created by Andréas-PC on 2016-09-28.
+ * Created by Andréas Appelqvist on 2016-09-28.
  */
 public class MiniMaxMove {
     private Move move;
@@ -16,15 +16,8 @@ public class MiniMaxMove {
         return move;
     }
 
-    public void setMove(Move move) {
-        this.move = move;
-    }
-
     public int getScore() {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
 }

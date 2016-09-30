@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- * Created by Andréas-PC on 2016-09-23.
+ * Created by Andréas Appelqvist on 2016-09-23.
  */
 public class GameBoard {
 
@@ -18,10 +18,6 @@ public class GameBoard {
 
     public int getTotalCols() {
         return this.totalCols;
-    }
-
-    public ArrayList<Tile> getBoard() {
-        return board;
     }
 
     public void setBoard(ArrayList<Tile> board) {
@@ -73,7 +69,6 @@ public class GameBoard {
 
     public void switchBrickColor(Move move) {
         int player = move.getMovePlayerInt();
-        System.out.println("switching tiles: " + move.getPosOfSwitchingBricks());
         for (int i = 0; i < move.getPosOfSwitchingBricks().size(); i++) {
             this.board.get(move.getPosOfSwitchingBricks().get(i)).setCurrentTileInt(player);
         }
@@ -274,7 +269,6 @@ public class GameBoard {
         }
         return null;
     }
-
 
     private LinkedList<Move> getLegalMoves(int player) {
         LinkedList<Move> legalMoves = new LinkedList<>();
