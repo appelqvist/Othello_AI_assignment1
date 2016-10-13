@@ -15,9 +15,7 @@ public class Game {
     public Game(int cols, int rows) {
         gameBoard = new GameBoard(cols, rows);
         gameBoard.initBoard(); //Setting up init
-        running = true;
         computer = new AI(gameBoard);
-        startGame();
     }
 
     private void makeMove(Move move) {
@@ -25,6 +23,7 @@ public class Game {
     }
 
     public void startGame() {
+        running = true;
 
         boolean playerHasMadeALegalMove;
         while (running) {
